@@ -1,2 +1,3 @@
 # aws-glue-libs-devcontainer
-Devcontainer to work with aws-glue-libs
+
+This in an example of a Devcontainer project that contains aws-glue-libs.
