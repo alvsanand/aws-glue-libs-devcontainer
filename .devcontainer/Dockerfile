@@ -61,11 +61,6 @@ RUN wget -qO- "https://github.com/awslabs/aws-glue-libs/archive/refs/tags/v$AWS_
     && mv aws-glue-libs-* aws-glue-libs \
     && python3 -m pip install boto3 pytest
 
-RUN source "${HOME}/.sdkman/bin/sdkman-init.sh" \
-    && cd aws-glue-libs \
-    && mvn clean package dependency:copy-dependencies \
-    && mkdir conf
-
 # Configure profile
 RUN echo 'alias python=python3' >> "${HOME}/.bashrc"
 RUN echo 'export PATH="${HOME}/aws-glue-libs/bin:${HOME}/spark/bin:${PATH}":${HOME}/.local/bin' >> "${HOME}/.bashrc"
@@ -73,6 +68,7 @@ RUN echo 'export SPARK_HOME="${HOME}/spark"' >> "${HOME}/.bashrc"
 RUN echo '[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"' >> "${HOME}/.bashrc"
 
 # Init aws-glue-libs
+ADD .devcontainer/pom.xml "${HOME}/aws-glue-libs/pom.xml"
 ADD .devcontainer/glue-setup.sh "${HOME}/aws-glue-libs/bin/glue-setup.sh"
 
 RUN bash -l -i -c 'source "$HOME/.bashrc" && bash "$HOME/aws-glue-libs/bin/glue-setup.sh"'
