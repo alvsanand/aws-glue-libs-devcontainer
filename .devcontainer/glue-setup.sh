@@ -30,6 +30,11 @@ if [[ ! -f "$INIT_FILE" ]]; then
     echo "spark.driver.extraClassPath $(echo $SPARK_HOME/jars/* | tr ' ' ':'):$(echo $GLUE_JARS_DIR/* | tr ' ' ':')" >> $SPARK_CONF_DIR/spark-defaults.conf
     echo "spark.executor.extraClassPath $(echo $SPARK_HOME/jars/* | tr ' ' ':'):$(echo $GLUE_JARS_DIR/* | tr ' ' ':')" >> $SPARK_CONF_DIR/spark-defaults.conf
 
+    # Fix json4s bug between spark and glue lib versions
+    for f in $(echo $SPARK_HOME/jars/json4s*.jar); do
+        mv $f $f.old
+    done
+
     touch "$INIT_FILE"
 fi
 
